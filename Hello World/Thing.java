@@ -1,5 +1,5 @@
 /* 
- * Itt is van: 
+ * Itt is van: ;)
  */
 public class Thing{
     public String Say;
