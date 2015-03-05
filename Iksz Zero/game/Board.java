@@ -23,19 +23,20 @@ public class Board extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Ha ez nincs, nem zarodik le az ablak
 		setSize(300,300); 
 		setLocationRelativeTo(null); // Azert, hogy az ablak a monitor kozepen jelenjen meg
-		setVisible(true);
 		
 		gameBoard = new JPanel();
-		gameBoard.setLayout(new GridLayout(3,3)); // A gombokal 3x3 matrixba helyezi
+		gameBoard.setLayout(new GridLayout(3,3)); // A gombokat 3x3 matrixba helyezi
 		
 		cell = new JButton[9];
 		for (int i = 0; i < 9; i ++){
 			cell[i] = new JButton("");
-			cell[i].setFont(new Font("Arial", Font.PLAIN, 50));
+			cell[i].setFont(new Font("Arial", Font.BOLD, 50));
 			cell[i].addActionListener(new Handler(i)); // Ez nezi, ha megnyomtak a gombot, a handler lejjebb van
 			gameBoard.add(cell[i]);
 		}
 		getContentPane().add(gameBoard);
+		
+		setVisible(true); // Megtudtam, hogy ezt a vegere jo tenni, mert mas gepeken nem jelennek meg a gombok valamiert 
 	}
 	
 	public void check(){
@@ -74,6 +75,7 @@ public class Board extends JFrame{
 		}
 	}
 	
+	@SuppressWarnings("static-access") // Az eclipse mind cseszi a fejem emiatt rajottem h lehet ilyent csinalni s elhalgat
 	public void result(String s){
 		winner = s;
 		String panelTitle = s.equals("")? "Draw!" : "Victory!";
@@ -94,13 +96,13 @@ public class Board extends JFrame{
 	}
 	
 	public class Handler implements ActionListener{
-		private int index; // Megjegyzi h melyik gomb volt lenyomva
+		private int index; // Megjegyzi, h melyik gomb volt lenyomva
 		public Handler(int a){
 			index = a;
 		}
 		
 		public void actionPerformed(ActionEvent e){
-			if (cell[index].getText() == "" && winner == ""){
+			if (cell[index].getText().equals("") && winner.equals("")){
 				if (turn % 2 == 0) 
 					cell[index].setText("X");
 				else 
