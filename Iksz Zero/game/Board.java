@@ -1,45 +1,28 @@
 package game;
 
-import javax.swing.JFrame; 
-import javax.swing.JButton; 
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 
-import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.Color;
 
-public class Board extends JFrame{
+public class Board extends JPanel{
 	private static final long serialVersionUID = 1L; // Ennek nincs semmi jelentosege
-	private JPanel gameBoard; // Ezen vannak a gombok
-	private JButton[] cell; // A gombok
-	private int turn = 0;
-	private String winner = "";
+	public static Cell[] cell; // A gombok
+	public static int turn = 0;
+	public static String winner = "";
 	
 	public Board(){
-		setTitle("Iksz zéró"); 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Ha ez nincs, nem zarodik le az ablak
-		setSize(300,300); 
-		setLocationRelativeTo(null); // Azert, hogy az ablak a monitor kozepen jelenjen meg
+		setLayout(new GridLayout(3,3)); // A gombokat 3x3 matrixba helyezi
 		
-		gameBoard = new JPanel();
-		gameBoard.setLayout(new GridLayout(3,3)); // A gombokat 3x3 matrixba helyezi
-		
-		cell = new JButton[9];
+		cell = new Cell[9];
 		for (int i = 0; i < 9; i ++){
-			cell[i] = new JButton("");
-			cell[i].setFont(new Font("Arial", Font.BOLD, 50));
-			cell[i].addActionListener(new Handler(i)); // Ez nezi, ha megnyomtak a gombot, a handler lejjebb van
-			gameBoard.add(cell[i]);
+			cell[i] = new Cell();
+			add(cell[i]);
 		}
-		getContentPane().add(gameBoard);
-		
-		setVisible(true); // Megtudtam, hogy ezt a vegere jo tenni, mert mas gepeken nem jelennek meg a gombok valamiert 
 	}
 	
-	public void check(){
+	public static void check(){
 		for (int i = 0; i < 3; i++){
 			// Rows
 			if (cell[3*i+0].getText() == cell[3*i+1].getText() && cell[3*i+1].getText() == cell[3*i+2].getText() && cell[3*i+2].getText() != ""){
@@ -76,7 +59,7 @@ public class Board extends JFrame{
 	}
 	
 	@SuppressWarnings("static-access") // Az eclipse mind cseszi a fejem emiatt rajottem h lehet ilyent csinalni s elhalgat
-	public void result(String s){
+	public static void result(String s){
 		winner = s;
 		String panelTitle = s.equals("")? "Draw!" : "Victory!";
 		String message = panelTitle.equals("Draw!")? "Draw! No one Wins." : "Victory for '" + s + "' ! Good Job!";
@@ -86,30 +69,12 @@ public class Board extends JFrame{
 		
 	}
 	
-	public void reset(){
+	public static void reset(){
 		turn = 0;
 		winner = "";
 		for (int i = 0; i < 9; i ++){
 			cell[i].setText("");
 			cell[i].setBackground(null);
-		}
-	}
-	
-	public class Handler implements ActionListener{
-		private int index; // Megjegyzi, h melyik gomb volt lenyomva
-		public Handler(int a){
-			index = a;
-		}
-		
-		public void actionPerformed(ActionEvent e){
-			if (cell[index].getText().equals("") && winner.equals("")){
-				if (turn % 2 == 0) 
-					cell[index].setText("X");
-				else 
-					cell[index].setText("O");
-				turn++;
-				check();
-			}
 		}
 	}
 }
