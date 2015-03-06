@@ -65,6 +65,7 @@ public class Board extends JPanel{
 		String message = panelTitle.equals("Draw!")? "Draw! No one Wins." : "Victory for '" + s + "' ! Good Job!";
 		
 		new JOptionPane().showMessageDialog(null,message,panelTitle,JOptionPane.INFORMATION_MESSAGE); // Kiirja az uzenetet
+		InformationPanel.playerWin();
 		reset();
 		
 	}
