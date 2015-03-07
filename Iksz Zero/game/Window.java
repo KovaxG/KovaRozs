@@ -21,9 +21,9 @@ public class Window extends JFrame{
 		setLocationRelativeTo(null); // Azert, hogy az ablak a monitor kozepen jelenjen meg
 		setLayout(new BorderLayout());
 		
-		board = new Board();
 		menu = new Menu();
 		infoPanel = new InformationPanel();
+		board = new Board();
 		getContentPane().add(BorderLayout.CENTER, board);
 		getContentPane().add(BorderLayout.NORTH, menu);
 		getContentPane().add(BorderLayout.SOUTH, infoPanel);

@@ -14,6 +14,7 @@ public class Board extends JPanel{
 	
 	public Board(){
 		setLayout(new GridLayout(3,3)); // A gombokat 3x3 matrixba helyezi
+		InformationPanel.setMultiPlayer();
 		
 		cell = new Cell[9];
 		for (int i = 0; i < 9; i ++){
@@ -58,14 +59,17 @@ public class Board extends JPanel{
 		}
 	}
 	
-	@SuppressWarnings("static-access") // Az eclipse mind cseszi a fejem emiatt rajottem h lehet ilyent csinalni s elhalgat
 	public static void result(String s){
 		winner = s;
 		String panelTitle = s.equals("")? "Draw!" : "Victory!";
 		String message = panelTitle.equals("Draw!")? "Draw! No one Wins." : "Victory for '" + s + "' ! Good Job!";
 		
-		new JOptionPane().showMessageDialog(null,message,panelTitle,JOptionPane.INFORMATION_MESSAGE); // Kiirja az uzenetet
-		InformationPanel.playerWin();
+		if (InformationPanel.multiPlayer){
+			message = panelTitle.equals("Draw!")? "Draw! No one Wins." : "Victory for '" + InformationPanel.getWinnerName(s) + "' ! Good Job!";
+		}
+		
+		JOptionPane.showMessageDialog(null,message,panelTitle,JOptionPane.INFORMATION_MESSAGE); // Kiirja az uzenetet
+		InformationPanel.playerWin(s);
 		reset();
 		
 	}
