@@ -1,5 +1,6 @@
 package game;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 
@@ -13,6 +14,8 @@ public class InformationPanel extends JPanel{
 	private static JLabel label;
 	
 	public static boolean multiPlayer = false;
+	private static boolean playingRounds = false;
+	private static int roundNr = 0;
 	private static int scoreP1 = 0;
 	private static int scoreP2 = 0;
 	private static int turn = 0;
@@ -59,6 +62,29 @@ public class InformationPanel extends JPanel{
 			if (s.equals("X")) scoreP2++;
 			else if (s.equals("O")) scoreP1++;
 		}
+		// TODO ha egyenlo akkor is megy egy roundot, majd nezz utanna
+		if (playingRounds){
+			if (scoreP1 + scoreP2 == roundNr){
+				label.setText(displayText());
+				String message = "Round victory for " + ((scoreP1 > scoreP2)? p1 : p2);
+				JOptionPane.showMessageDialog(null,message,"End of Rounds",JOptionPane.INFORMATION_MESSAGE);
+				clearScore();
+				playingRounds = false;
+			}
+		}
+		label.setText(displayText());
+	}
+	
+	public static void playRounds(int a){
+		clearScore();
+		roundNr = a;
+		playingRounds = true;
+		label.setText(displayText());
+	}
+	
+	public static void noRounds(){
+		clearScore();
+		playingRounds = false;
 		label.setText(displayText());
 	}
 	
@@ -77,7 +103,11 @@ public class InformationPanel extends JPanel{
 	}
 	
 	private static String displayText(){
-		if (turn % 2 == 0) return "[" + p1 + ": " + scoreP1 + "]   " + p2 + ": " + scoreP2;
-		else return p1 + ": " + scoreP1 + "   [" + p2 + ": " + scoreP2 + "]";
+		String text = "";
+		if (turn % 2 == 0) text = "[" + p1 + ": " + scoreP1 + "]   " + p2 + ": " + scoreP2;
+		else text = p1 + ": " + scoreP1 + "   [" + p2 + ": " + scoreP2 + "]";
+		
+		if (playingRounds) text += "  Round: " + (scoreP1 + scoreP2) + "/" + roundNr;
+		return text;
 	}
 }
