@@ -3,6 +3,8 @@ package game;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 
+import ai.AI;
+
 import java.awt.GridLayout;
 import java.awt.Color;
 
@@ -18,7 +20,7 @@ public class Board extends JPanel{
 		
 		cell = new Cell[9];
 		for (int i = 0; i < 9; i ++){
-			cell[i] = new Cell();
+			cell[i] = new Cell(i);
 			add(cell[i]);
 		}
 	}
@@ -54,7 +56,13 @@ public class Board extends JPanel{
 			cell[2].setBackground(Color.PINK);
 			result(cell[2].getText());
 		}
-		if (turn == 9){
+		// TODO itt az a baj, hogy csak akkor kene bemenjen ebbe a forba, ha a szamitogep jon. Majd utanna nezek.
+		if (turn != 9 && !InformationPanel.multiPlayer){
+			String setAs = "" + AI.getPlaying();
+			cell[AI.nextMove()].setText(setAs);
+			turn++;
+		}
+		else if (turn == 9){
 			result(""); // Megtelt a palya s egyenlo
 		}
 	}

@@ -4,6 +4,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 
+import ai.AI;
+
 import java.awt.FlowLayout;
 
 public class InformationPanel extends JPanel{
@@ -24,6 +26,14 @@ public class InformationPanel extends JPanel{
 		label = new JLabel("I'm a potato.");
 		setLayout(new FlowLayout(FlowLayout.LEFT));
 		add(label);
+	}
+	
+	public static void setSinglePlayer(){
+		multiPlayer = false;
+		turn = 0;
+		scoreP1 = 0;
+		scoreP2 = 0;
+		label.setText(displayText());
 	}
 	
 	public static void setMultiPlayer(){

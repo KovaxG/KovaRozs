@@ -8,6 +8,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import ai.AI;
 import utils.MenuHandlerEnum;
 
 public class Menu extends JMenuBar{
@@ -56,9 +57,10 @@ public class Menu extends JMenuBar{
 		public void actionPerformed(ActionEvent e){
 			switch(index){
 			case SINGLEPLAYER: 
-				// TODO itt kell egy AIt irni, tehat meg nem tudok mit ide irni
+				InformationPanel.setSinglePlayer();
 				InformationPanel.noRounds();
 				Board.reset();
+				AI.clearBoard();
 				break;
 			case MULTIPLAYER: 
 				InformationPanel.setMultiPlayer();
