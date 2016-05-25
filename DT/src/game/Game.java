@@ -1,3 +1,4 @@
+package game;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -15,11 +16,11 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import game.Town;
 import graphics.Screen;
 import graphics.Sprite;
 import input.Mouse;
@@ -49,7 +50,6 @@ public class Game extends Canvas implements Runnable{
 		
 		this.setPreferredSize(new Dimension(width * scale, height * scale));
 		
-		town = new Town(true, false);
 		screen = new Screen(buffer.getWidth() , buffer.getHeight(), town);
 		mouse = new Mouse();
 		
@@ -119,6 +119,28 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	public void run() {
+		
+		//<==================================================================================>
+				Thread thread = new Thread(new Server());
+				thread.start();
+				
+				
+				
+		
+		boolean succes = false;
+		while (!succes) {
+			succes = true;
+			try {
+				String input = JOptionPane.showInputDialog("Please input username and password separated by a space");
+				String[] token = input.split(" ");
+				succes = getData(token[0], token[1]);
+			}
+			catch(Exception e) {
+				succes = false;
+			}
+		}
+		screen.town = town;
+		
 		long lastTime = System.nanoTime();
 		long now = System.nanoTime();
 		long delta = 0;
@@ -128,14 +150,6 @@ public class Game extends Canvas implements Runnable{
 		int renderCounter = 0;
 		
 		this.requestFocus();
-		
-		//<==================================================================================>
-		Thread thread = new Thread(new Server());
-		thread.start();
-		
-		
-		while (!getData()) {}
-		screen.town = town;
 		
 		while(running) {
 			now = System.nanoTime();
@@ -163,7 +177,7 @@ public class Game extends Canvas implements Runnable{
 		stop();
 	}
 	
-	public boolean getData() {
+	public boolean getData(String userName, String pass) {
 		String msg = "";
 		Socket socket = null;
 		System.out.println("Game: Getting Data \n");
@@ -179,6 +193,8 @@ public class Game extends Canvas implements Runnable{
 
 			//g.toJson(town, out);
 			out.println("GET");
+			out.println(userName);
+			out.println(pass);
 			// Wait for response from server
 			String str = in.readLine(); // Get Town Json from database
 			System.out.println("Game received: " + str);

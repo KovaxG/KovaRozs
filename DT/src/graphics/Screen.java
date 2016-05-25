@@ -1,5 +1,7 @@
 package graphics;
 
+import java.awt.Color;
+
 import game.Town;
 
 public class Screen {
@@ -8,6 +10,8 @@ public class Screen {
 	public int[] pixels;
 	
 	public Town town;
+	
+	private int magicPink = 0xffff00ff;
 	
 	public Screen(int width, int height, Town t) {
 		this.WIDTH = width;
@@ -37,7 +41,8 @@ public class Screen {
 		int townCenterYOffset = (HEIGHT - townCenter.HEIGHT) / 2;
 		for (int i = 0; i < 0 + townCenter.WIDTH; i++) {
 			for (int j = 0; j < 0 + townCenter.HEIGHT; j++) {
-				pixels[(i + townCenterXOffset)  + (j + townCenterYOffset) * WIDTH] = townCenter.pixels[i + j * townCenter.WIDTH];
+				int pixel = townCenter.pixels[i + j * townCenter.WIDTH];
+				if (pixel != magicPink) pixels[(i + townCenterXOffset)  + (j + townCenterYOffset) * WIDTH] = pixel;
 			}
 		}
 		
@@ -49,7 +54,8 @@ public class Screen {
 		int wareHouseYOffset = (HEIGHT - wareHouse.HEIGHT) / 2;
 		for (int i = 0; i < 0 + wareHouse.WIDTH; i++) {
 			for (int j = 0; j < 0 + wareHouse.HEIGHT; j++) {
-				pixels[(i + wareHouseXOffset)  + (j + wareHouseYOffset) * WIDTH] = wareHouse.pixels[i + j * wareHouse.WIDTH];
+				int pixel = wareHouse.pixels[i + j * wareHouse.WIDTH];
+				if (pixel != magicPink) pixels[(i + wareHouseXOffset)  + (j + wareHouseYOffset) * WIDTH] = pixel;
 			}
 		}
 	}
